@@ -1,40 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Products - TastySnacks</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
+    <h1>Our Products</h1>
     <nav>
-      <div class="logo">TastySnacks</div>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="products.html">Products</a></li>
-        <li><a href="cart.html">Cart</a></li>
-      </ul>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
     </nav>
   </header>
   <main>
-    <h1>Our Snacks</h1>
-    <div class="product-grid">
+    <section class="products">
       <div class="product">
         <h3>Chips</h3>
-        <p>$2.00</p>
-        <button onclick="addToCart('Chips', 2)">Add to Cart</button>
+        <p>Crunchy and salty potato chips.</p>
+        <button>Add to Cart</button>
       </div>
       <div class="product">
         <h3>Cookies</h3>
-        <p>$3.00</p>
-        <button onclick="addToCart('Cookies', 3)">Add to Cart</button>
+        <p>Sweet and chewy chocolate cookies.</p>
+        <button>Add to Cart</button>
       </div>
-    </div>
+    </section>
   </main>
   <footer>
     <p>&copy; 2025 TastySnacks</p>
   </footer>
-  <script src="script.js"></script>
 </body>
 </html>
