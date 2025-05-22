@@ -1,18 +1,19 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #fef5ed;
+  font-family: sans-serif;
+  background: #fff3e6;
+  color: #333;
   padding: 20px;
 }
 h1 {
-  font-size: 36px;
+  color: #000;
 }
 .product {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
-.price {
-  color: orangered;
-  font-size: 24px;
+img {
+  width: 100px;
+  height: auto;
 }
 button {
-  padding: 8px 16px;
+  padding: 5px 10px;
 }
