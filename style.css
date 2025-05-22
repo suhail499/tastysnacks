@@ -1,34 +1,21 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: #fff5eb;
-  margin: 0;
-  padding: 0;
-}
-.container {
+  background: #fff7ef;
+  color: #333;
   padding: 20px;
 }
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+h1 {
+  font-size: 2.5em;
 }
 .product {
-  border-bottom: 1px solid #ddd;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
-.product img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
+.price {
+  color: #f60;
+  font-size: 1.2em;
 }
 button {
   padding: 5px 10px;
-  background: orange;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-footer {
-  margin-top: 30px;
+  font-size: 1em;
 }

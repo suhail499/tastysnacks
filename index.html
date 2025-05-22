@@ -8,33 +8,29 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>TastySnacks</h1>
-      <select id="currency" onchange="convertPrices()">
-        <option value="INR">INR (₹)</option>
-        <option value="USD">USD ($)</option>
-      </select>
-    </header>
-    <main>
-      <div class="product" data-price="100">
-        <img src="https://via.placeholder.com/150?text=Chips" alt="Chips" />
-        <h2>Chips</h2>
-        <p class="price">₹100</p>
-        <button onclick="addToCart('Chips', 100)">Add to Cart</button>
-      </div>
-      <div class="product" data-price="150">
-        <img src="https://via.placeholder.com/150?text=Cookies" alt="Cookies" />
-        <h2>Cookies</h2>
-        <p class="price">₹150</p>
-        <button onclick="addToCart('Cookies', 150)">Add to Cart</button>
-      </div>
-    </main>
-    <footer>
-      <h3>Cart</h3>
-      <ul id="cart"></ul>
-    </footer>
+  <h1>TastySnacks</h1>
+  <select id="currency" onchange="updateCurrency()">
+    <option value="INR">INR (₹)</option>
+    <option value="USD">USD ($)</option>
+  </select>
+
+  <div class="product">
+    <img src="chips.jpg" alt="Chips" />
+    <h2>Chips</h2>
+    <p class="price" data-inr="100" data-usd="1.2">₹100</p>
+    <button onclick="addToCart('Chips', 100)">Add to Cart</button>
   </div>
+
+  <div class="product">
+    <img src="cookies.jpg" alt="Cookies" />
+    <h2>Cookies</h2>
+    <p class="price" data-inr="150" data-usd="1.8">₹150</p>
+    <button onclick="addToCart('Cookies', 150)">Add to Cart</button>
+  </div>
+
+  <h2>Cart</h2>
+  <ul id="cart"></ul>
+
   <script src="script.js"></script>
 </body>
 </html>
