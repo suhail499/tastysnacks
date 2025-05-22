@@ -1,34 +1,52 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TastySnacks | Delicious Snacks Delivered</title>
-  <meta name="description" content="Explore our delicious and crispy snacks online. Order now from TastySnacks!">
-  <meta name="keywords" content="snacks, tasty snacks, order snacks, chips, namkeen, online snacks">
-  <meta name="author" content="TastySnacks">
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TastySnacks - Products</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
+    .product { margin: 20px 0; padding: 10px; border: 1px solid #ddd; background: white; border-radius: 8px; }
+    select { padding: 6px 10px; font-size: 16px; margin-bottom: 20px; }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Welcome to TastySnacks</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="cart.html">Cart</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
-  <main>
-    <section class="cta">
-      <h2>Delicious snacks delivered to your door!</h2>
-      <p>Explore our range and order your favorites today.</p>
-      <a href="products.html" class="btn">Shop Now</a>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2025 TastySnacks. All rights reserved.</p>
-  </footer>
+
+  <h1>Our Products</h1>
+  <label for="currencySelector">Choose Currency: </label>
+  <select id="currencySelector">
+    <option value="INR">₹ INR</option>
+    <option value="USD">$ USD</option>
+  </select>
+
+  <div class="product">
+    <h3>Masala Chips</h3>
+    <p class="price" data-inr="50" data-usd="0.6">₹50</p>
+  </div>
+
+  <div class="product">
+    <h3>Chocolate Bar</h3>
+    <p class="price" data-inr="75" data-usd="0.9">₹75</p>
+  </div>
+
+  <script>
+    const currencySelector = document.getElementById('currencySelector');
+    const priceElements = document.querySelectorAll('.price');
+
+    currencySelector.addEventListener('change', () => {
+      const selectedCurrency = currencySelector.value;
+      priceElements.forEach(el => {
+        const inr = el.getAttribute('data-inr');
+        const usd = el.getAttribute('data-usd');
+        if (selectedCurrency === 'INR') {
+          el.innerText = `₹${inr}`;
+        } else {
+          el.innerText = `$${usd}`;
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
