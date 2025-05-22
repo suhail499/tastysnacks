@@ -1,2 +1,10 @@
-# tastysnacks
-A modern and tasty snacks brand website showcasing products, offers, and easy online ordering. Built for both flavor and user experience.
+# TastySnacks
+
+A modern snack brand website with product listings, shopping cart, and contact form. Deployed with GitHub Pages.
+
+## Features
+- Homepage with CTA
+- Product grid layout
+- Add to cart and cart management
+- About and Contact pages
+- Responsive design
