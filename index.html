@@ -1,52 +1,29 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TastySnacks - Products</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
-    .product { margin: 20px 0; padding: 10px; border: 1px solid #ddd; background: white; border-radius: 8px; }
-    select { padding: 6px 10px; font-size: 16px; margin-bottom: 20px; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TastySnacks</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <h1>Our Products</h1>
-  <label for="currencySelector">Choose Currency: </label>
-  <select id="currencySelector">
-    <option value="INR">₹ INR</option>
-    <option value="USD">$ USD</option>
-  </select>
-
-  <div class="product">
-    <h3>Masala Chips</h3>
-    <p class="price" data-inr="50" data-usd="0.6">₹50</p>
-  </div>
-
-  <div class="product">
-    <h3>Chocolate Bar</h3>
-    <p class="price" data-inr="75" data-usd="0.9">₹75</p>
-  </div>
-
-  <script>
-    const currencySelector = document.getElementById('currencySelector');
-    const priceElements = document.querySelectorAll('.price');
-
-    currencySelector.addEventListener('change', () => {
-      const selectedCurrency = currencySelector.value;
-      priceElements.forEach(el => {
-        const inr = el.getAttribute('data-inr');
-        const usd = el.getAttribute('data-usd');
-        if (selectedCurrency === 'INR') {
-          el.innerText = `₹${inr}`;
-        } else {
-          el.innerText = `$${usd}`;
-        }
-      });
-    });
-  </script>
-
+  <header>
+    <h1>TastySnacks</h1>
+    <select id="currency-selector">
+      <option value="INR">INR (₹)</option>
+      <option value="USD">USD ($)</option>
+    </select>
+  </header>
+  <main>
+    <div class="product">
+      <h2>Chips</h2>
+      <span class="price" data-id="product1">₹100</span>
+    </div>
+    <div class="product">
+      <h2>Cookies</h2>
+      <span class="price" data-id="product2">₹150</span>
+    </div>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
