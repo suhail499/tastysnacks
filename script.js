@@ -1,28 +1,31 @@
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 function addToCart(product, price) {
-    cart.push({ product, price });
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCart();
+  cart.push({ product, price });
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCart();
 }
 
 function updateCart() {
-    const cartContainer = document.getElementById('cart');
-    cartContainer.innerHTML = '<h2>Shopping Cart</h2>';
-    let total = 0;
+  const cartContainer = document.getElementById('cart-items');
+  const totalElement = document.getElementById('total');
+  cartContainer.innerHTML = '';
+  let total = 0;
 
-    if (cart.length === 0) {
-        cartContainer.innerHTML += '<p>Your cart is empty.</p>';
-        return;
-    }
+  if (cart.length === 0) {
+    cartContainer.innerHTML = '<li>Your cart is empty.</li>';
+    totalElement.textContent = '0';
+    return;
+  }
 
-    cart.forEach(item => {
-        cartContainer.innerHTML += `<p>${item.product}: ₹${item.price}</p>`;
-        total += item.price;
-    });
+  cart.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.product} - ₹${item.price}`;
+    cartContainer.appendChild(li);
+    total += item.price;
+  });
 
-    cartContainer.innerHTML += `<h3>Total: ₹${total}</h3>`;
+  totalElement.textContent = total;
 }
 
-// Page load पर cart अपडेट करें
 document.addEventListener('DOMContentLoaded', updateCart);
