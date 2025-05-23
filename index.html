@@ -1,89 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TastySnacks</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #ff9800;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-    }
-    nav {
-      background: #eee;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav a {
-      margin: 0 1rem;
-      text-decoration: none;
-      color: #333;
-    }
-    .products {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      padding: 2rem;
-    }
-    .product {
-      border: 1px solid #ccc;
-      padding: 1rem;
-      text-align: center;
-      width: 150px;
-    }
-    .cart {
-      padding: 1rem;
-      border-top: 1px solid #ccc;
-      background: #f9f9f9;
-    }
-    footer {
-      background: #eee;
-      padding: 1rem;
-      text-align: center;
-      font-size: 0.9rem;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TastySnacks</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <header>TastySnacks</header>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#products">Products</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-  </nav>
-
-  <section id="products" class="products">
-    <div class="product">
-      <img src="https://via.placeholder.com/150x100.png?text=Chips" alt="Chips">
-      <h3>Chips</h3>
-      <p>₹100</p>
-      <button onclick="addToCart('Chips', 100)">Add to Cart</button>
-    </div>
-    <div class="product">
-      <img src="https://via.placeholder.com/150x100.png?text=Cookies" alt="Cookies">
-      <h3>Cookies</h3>
-      <p>₹150</p>
-      <button onclick="addToCart('Cookies', 150)">Add to Cart</button>
-    </div>
-  </section>
-
-  <div id="cart"></div>
-
-  <footer>
-    &copy; 2025 TastySnacks. All rights reserved.
-  </footer>
-
-  <script src="script.js"></script>
-
+    <header>
+        <h1>Welcome to TastySnacks!</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Products</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <section class="products">
+            <h2>Our Delicious Snacks</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/150" alt="Snack 1" />
+                    <h3>Crunchy Chips</h3>
+                    <p>$2.99</p>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/150" alt="Snack 2" />
+                    <h3>Sweet Cookies</h3>
+                    <p>$3.49</p>
+                    <button>Add to Cart</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 TastySnacks. All rights reserved.</p>
+    </footer>
 </body>
 </html>
