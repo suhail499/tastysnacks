@@ -1,16 +1,28 @@
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-function addToCart(item, price) {
-  cart.push({ item, price });
-  renderCart();
+function addToCart(product, price) {
+    cart.push({ product, price });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCart();
 }
 
-function renderCart() {
-  const cartList = document.getElementById("cart");
-  cartList.innerHTML = "";
-  cart.forEach(({ item, price }) => {
-    const li = document.createElement("li");
-    li.textContent = `${item} - ₹${price}`;
-    cartList.appendChild(li);
-  });
+function updateCart() {
+    const cartContainer = document.getElementById('cart');
+    cartContainer.innerHTML = '<h2>Shopping Cart</h2>';
+    let total = 0;
+
+    if (cart.length === 0) {
+        cartContainer.innerHTML += '<p>Your cart is empty.</p>';
+        return;
+    }
+
+    cart.forEach(item => {
+        cartContainer.innerHTML += `<p>${item.product}: ₹${item.price}</p>`;
+        total += item.price;
+    });
+
+    cartContainer.innerHTML += `<h3>Total: ₹${total}</h3>`;
 }
+
+// Page load पर cart अपडेट करें
+document.addEventListener('DOMContentLoaded', updateCart);
