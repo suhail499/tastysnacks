@@ -72,3 +72,34 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// LOGIN FUNCTIONALITY
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.getElementById("loginForm");
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+
+      if (
+        storedUser &&
+        username === storedUser.username &&
+        password === storedUser.password
+      ) {
+        document.getElementById("loginMessage").textContent = "Login successful!";
+        document.getElementById("loginMessage").style.color = "green";
+        // Redirect after login
+        setTimeout(() => {
+          window.location.href = "index.html"; // or products.html
+        }, 1500);
+      } else {
+        document.getElementById("loginMessage").textContent = "Invalid credentials!";
+        document.getElementById("loginMessage").style.color = "red";
+      }
+    });
+  }
+});
