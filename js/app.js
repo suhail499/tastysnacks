@@ -22,12 +22,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     productList.innerHTML += `
       <div class="col-md-3">
         <div class="card product-card h-100">
-          <img src="${product.image}" class="product-img p-3">
+          <img src="${product.image}" class="product-img p-3" onerror="this.src='https://via.placeholder.com/150'">
           <div class="card-body">
             <h6>${product.name}</h6>
             <div class="d-flex justify-content-between">
               <span class="text-success fw-bold">₹${product.price}</span>
-              <small class="text-warning"><i class="fas fa-star"></i> ${product.rating}</small>
+              <small class="text-warning"><i class="fas fa-star"></i> ${product.rating || 4.0}</small>
             </div>
             <button class="btn btn-primary btn-sm w-100 mt-2 add-to-cart" data-id="${doc.id}">
               <i class="fas fa-cart-plus"></i> Add to Cart
