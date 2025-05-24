@@ -204,3 +204,27 @@
     <script src="script.js"></script>
 </body>
 </html>
+<!-- Firebase CDN -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // Firebase कॉन्फ़िग
+  const firebaseConfig = {
+    apiKey: "AIzaSyB1jBxatuWQd56C5trcdOEs9u7wW6100dM",
+    authDomain: "tastysnacks-8e725.firebaseapp.com",
+    projectId: "tastysnacks-8e725",
+    storageBucket: "tastysnacks-8e725.appspot.com",
+    messagingSenderId: "497024204571",
+    appId: "1:497024204571:web:c0429059c80434f0705dbe",
+    measurementId: "G-N73NT8K8VG"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  
+  // Analytics की जरूरत नहीं है (वैकल्पिक)
+</script>
