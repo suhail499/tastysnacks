@@ -254,3 +254,10 @@ function showAlert(message, type) {
 // इनिशियलाइज़ेशन
 renderProducts(products);
 updateCart();
+// Firebase इनिशियलाइज़ेशन
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("Firebase initialized:", firebase.app().name);
+  if (!firebase.app().length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+});
