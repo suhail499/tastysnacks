@@ -72,52 +72,47 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-// LOGIN FUNCTIONALITY
+// Signup Logic
 document.addEventListener("DOMContentLoaded", () => {
+  const signupForm = document.getElementById("signupForm");
   const loginForm = document.getElementById("loginForm");
 
-  if (loginForm) {
-    loginForm.addEventListener("submit", function (e) {
+  if (signupForm) {
+    signupForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const exists = users.find((user) => user.email === email);
 
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-
-      if (
-        storedUser &&
-        username === storedUser.username &&
-        password === storedUser.password
-      ) {
-        document.getElementById("loginMessage").textContent = "Login successful!";
-        document.getElementById("loginMessage").style.color = "green";
-        // Redirect after login
-        setTimeout(() => {
-          window.location.href = "index.html"; // or products.html
-        }, 1500);
+      if (exists) {
+        alert("User already exists!");
       } else {
-        document.getElementById("loginMessage").textContent = "Invalid credentials!";
-        document.getElementById("loginMessage").style.color = "red";
+        users.push({ email, password });
+        localStorage.setItem("users", JSON.stringify(users));
+        alert("Signup successful!");
+        window.location.href = "login.html";
+      }
+    });
+  }
+
+  // Login Logic
+  if (loginForm) {
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find((u) => u.email === email && u.password === password);
+
+      if (user) {
+        alert("Login successful!");
+        window.location.href = "index.html";
+      } else {
+        document.getElementById("loginError").textContent = "Invalid credentials!";
       }
     });
   }
 });
-// Show Welcome Message if User is Logged In
-document.addEventListener("DOMContentLoaded", function () {
-  const currentUser = localStorage.getItem("currentUser");
-  if (currentUser) {
-    const welcomeSection = document.getElementById("welcomeMessage");
-    const userNameSpan = document.getElementById("userName");
-    if (welcomeSection && userNameSpan) {
-      userNameSpan.textContent = currentUser;
-      welcomeSection.style.display = "block";
-    }
-  }
-});
-
-// Logout function
-function logout() {
-  localStorage.removeItem("currentUser");
-  window.location.href = "login.html";
-}
