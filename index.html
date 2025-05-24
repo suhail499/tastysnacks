@@ -3,294 +3,558 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasty Snacks</title>
+    <title>TastySnacks - Delicious Food Delivery</title>
+    <link rel="icon" href="https://img.icons8.com/color/48/000000/hamburger.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --primary: #ff6b6b;
+            --primary-dark: #ff5252;
+            --secondary: #4caf50;
+            --dark: #333;
+            --light: #f5f5f5;
+            --gray: #666;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
-
+        
         body {
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
         }
-
+        
+        /* Modern Header */
         header {
-            background-color: #ff6b6b;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             text-align: center;
-            padding: 1rem 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Main Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
-
+        
+        /* Search Bar */
+        .search-container {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        
+        #search {
+            padding: 0.8rem 1.5rem;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 50px;
+            border: 2px solid #ddd;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        #search:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255,107,107,0.2);
+        }
+        
+        /* Menu Grid */
         .menu {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
-
+        
+        /* Snack Cards */
         .snack-card {
             background-color: white;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
         }
-
+        
         .snack-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
-
+        
         .snack-img {
             width: 100%;
-            height: 180px;
+            height: 200px;
             object-fit: cover;
+            border-bottom: 1px solid #eee;
         }
-
+        
         .snack-info {
             padding: 1.5rem;
         }
-
+        
         .snack-info h3 {
             margin-bottom: 0.5rem;
-            color: #333;
+            color: var(--dark);
+            font-size: 1.3rem;
         }
-
+        
         .snack-info p {
-            color: #666;
+            color: var(--gray);
             margin-bottom: 1rem;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
-
-        .snack-info .price {
-            font-weight: bold;
-            color: #ff6b6b;
-            font-size: 1.2rem;
+        
+        .price {
+            display: block;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin: 1rem 0;
         }
-
+        
         .add-to-cart {
             display: block;
             width: 100%;
-            padding: 0.5rem;
-            background-color: #ff6b6b;
+            padding: 0.8rem;
+            background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
+        
         .add-to-cart:hover {
-            background-color: #ff5252;
+            background-color: var(--primary-dark);
         }
-
+        
+        /* Cart Section */
         .cart {
             background-color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 2rem;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-top: 3rem;
+            position: sticky;
+            top: 20px;
         }
-
+        
         .cart h2 {
-            margin-bottom: 1rem;
-            color: #333;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.5rem;
         }
-
+        
         .cart-items {
             list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
         }
-
+        
         .cart-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem 0;
+            padding: 1rem 0;
             border-bottom: 1px solid #eee;
         }
-
-        .cart-item:last-child {
-            border-bottom: none;
+        
+        .item-info {
+            flex: 1;
         }
-
-        .cart-total {
+        
+        .item-name {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        
+        .item-price {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
-            text-align: right;
-            margin-top: 1rem;
-            font-size: 1.2rem;
+            transition: all 0.2s;
         }
-
+        
+        .quantity-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-left: 1rem;
+        }
+        
+        .cart-total {
+            font-weight: 700;
+            text-align: right;
+            margin-top: 1.5rem;
+            font-size: 1.4rem;
+            color: var(--dark);
+        }
+        
         .checkout-btn {
             display: block;
             width: 100%;
-            padding: 0.75rem;
-            background-color: #4caf50;
+            padding: 1rem;
+            background-color: var(--secondary);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            margin-top: 1rem;
-            transition: background-color 0.3s ease;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
         }
-
+        
         .checkout-btn:hover {
             background-color: #3e8e41;
+            transform: translateY(-2px);
         }
-
+        
         .empty-cart {
             text-align: center;
-            color: #666;
-            padding: 1rem 0;
+            color: var(--gray);
+            padding: 2rem 0;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .snack-card {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .menu {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .menu {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Tasty Snacks</h1>
-        <p>Delicious snacks delivered to your doorstep</p>
+        <h1>TastySnacks</h1>
+        <p>Delicious food delivered to your doorstep</p>
     </header>
 
     <div class="container">
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search for snacks...">
+        </div>
+
         <div class="menu">
-            <div class="snack-card">
-                <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35" alt="Burger" class="snack-img">
-                <div class="snack-info">
-                    <h3>Classic Burger</h3>
-                    <p>A juicy beef patty with fresh veggies and special sauce</p>
-                    <p class="price">₹99</p>
-                    <button class="add-to-cart" data-name="Classic Burger" data-price="99">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="snack-card">
-                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591" alt="Pizza" class="snack-img">
-                <div class="snack-info">
-                    <h3>Margherita Pizza</h3>
-                    <p>Classic pizza with tomato sauce, mozzarella and basil</p>
-                    <p class="price">₹199</p>
-                    <button class="add-to-cart" data-name="Margherita Pizza" data-price="199">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="snack-card">
-                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Salad" class="snack-img">
-                <div class="snack-info">
-                    <h3>Fresh Salad</h3>
-                    <p>Healthy mix of fresh vegetables with olive oil dressing</p>
-                    <p class="price">₹149</p>
-                    <button class="add-to-cart" data-name="Fresh Salad" data-price="149">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="snack-card">
-                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd" alt="Fries" class="snack-img">
-                <div class="snack-info">
-                    <h3>Crispy Fries</h3>
-                    <p>Golden fried potato fries with a pinch of salt</p>
-                    <p class="price">₹79</p>
-                    <button class="add-to-cart" data-name="Crispy Fries" data-price="79">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="snack-card">
-                <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d" alt="Ice Cream" class="snack-img">
-                <div class="snack-info">
-                    <h3>Vanilla Ice Cream</h3>
-                    <p>Creamy vanilla flavored ice cream with chocolate sauce</p>
-                    <p class="price">₹59</p>
-                    <button class="add-to-cart" data-name="Vanilla Ice Cream" data-price="59">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="snack-card">
-                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb" alt="Donut" class="snack-img">
-                <div class="snack-info">
-                    <h3>Chocolate Donut</h3>
-                    <p>Soft donut with chocolate glaze and sprinkles</p>
-                    <p class="price">₹49</p>
-                    <button class="add-to-cart" data-name="Chocolate Donut" data-price="49">Add to Cart</button>
-                </div>
-            </div>
+            <!-- Menu items will be loaded by JavaScript -->
         </div>
 
         <div class="cart">
-            <h2>Your Cart</h2>
-            <ul class="cart-items">
-                <!-- Cart items will be added here dynamically -->
-            </ul>
+            <h2>
+                <span>Your Cart</span>
+                <span id="cart-count">0 items</span>
+            </h2>
+            <ul class="cart-items"></ul>
             <p class="empty-cart">Your cart is empty</p>
             <p class="cart-total">Total: ₹0</p>
             <button class="checkout-btn">Proceed to Checkout</button>
         </div>
     </div>
 
+    <footer>
+        <p>&copy; 2023 TastySnacks. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+    </footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            // Snacks Data
+            const snacks = [
+                {
+                    id: 1,
+                    name: "Classic Burger",
+                    desc: "Juicy beef patty with fresh veggies and special sauce",
+                    price: 99,
+                    image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35",
+                    category: "burger"
+                },
+                {
+                    id: 2,
+                    name: "Margherita Pizza",
+                    desc: "Classic pizza with tomato sauce, mozzarella and basil",
+                    price: 199,
+                    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591",
+                    category: "pizza"
+                },
+                {
+                    id: 3,
+                    name: "Fresh Salad",
+                    desc: "Healthy mix of fresh vegetables with olive oil dressing",
+                    price: 149,
+                    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
+                    category: "salad"
+                },
+                {
+                    id: 4,
+                    name: "Crispy Fries",
+                    desc: "Golden fried potato fries with a pinch of salt",
+                    price: 79,
+                    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
+                    category: "fries"
+                },
+                {
+                    id: 5,
+                    name: "Vanilla Ice Cream",
+                    desc: "Creamy vanilla flavored ice cream with chocolate sauce",
+                    price: 59,
+                    image: "https://images.unsplash.com/photo-1571115177098-24ec42ed204d",
+                    category: "dessert"
+                },
+                {
+                    id: 6,
+                    name: "Chocolate Donut",
+                    desc: "Soft donut with chocolate glaze and sprinkles",
+                    price: 49,
+                    image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb",
+                    category: "dessert"
+                }
+            ];
+
+            // DOM Elements
+            const menuContainer = document.querySelector('.menu');
+            const searchInput = document.getElementById('search');
             const cartItemsList = document.querySelector('.cart-items');
             const emptyCartMessage = document.querySelector('.empty-cart');
             const cartTotal = document.querySelector('.cart-total');
             const checkoutButton = document.querySelector('.checkout-btn');
+            const cartCount = document.getElementById('cart-count');
 
-            let cart = [];
+            // Load cart from localStorage or initialize empty array
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-            // Add to cart functionality
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const name = this.getAttribute('data-name');
-                    const price = parseInt(this.getAttribute('data-price'));
+            // Render Menu
+            function renderMenu(items = snacks) {
+                menuContainer.innerHTML = items.map(snack => `
+                    <div class="snack-card" style="animation-delay: ${snack.id * 0.1}s">
+                        <img src="${snack.image}" alt="${snack.name}" class="snack-img">
+                        <div class="snack-info">
+                            <h3>${snack.name}</h3>
+                            <p>${snack.desc}</p>
+                            <span class="price">₹${snack.price}</span>
+                            <button class="add-to-cart" 
+                                    data-id="${snack.id}"
+                                    data-name="${snack.name}" 
+                                    data-price="${snack.price}"
+                                    data-image="${snack.image}">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
 
-                    // Check if item already exists in cart
-                    const existingItem = cart.find(item => item.name === name);
-
-                    if (existingItem) {
-                        existingItem.quantity += 1;
-                    } else {
-                        cart.push({
-                            name: name,
-                            price: price,
-                            quantity: 1
-                        });
-                    }
-
-                    updateCart();
+                // Add event listeners to all add-to-cart buttons
+                document.querySelectorAll('.add-to-cart').forEach(button => {
+                    button.addEventListener('click', addToCart);
                 });
-            });
+            }
 
-            // Update cart display
+            // Add to Cart Function
+            function addToCart(e) {
+                const id = parseInt(e.target.getAttribute('data-id'));
+                const name = e.target.getAttribute('data-name');
+                const price = parseInt(e.target.getAttribute('data-price'));
+                const image = e.target.getAttribute('data-image');
+
+                // Check if item already exists in cart
+                const existingItem = cart.find(item => item.id === id);
+
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id,
+                        name,
+                        price,
+                        image,
+                        quantity: 1
+                    });
+                }
+
+                // Update cart in localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                updateCart();
+                
+                // Add visual feedback
+                const btn = e.target;
+                btn.textContent = 'Added!';
+                btn.style.backgroundColor = '#4caf50';
+                setTimeout(() => {
+                    btn.textContent = 'Add to Cart';
+                    btn.style.backgroundColor = 'var(--primary)';
+                }, 1000);
+            }
+
+            // Update Cart Display
             function updateCart() {
                 // Clear the cart items list
                 cartItemsList.innerHTML = '';
 
                 // Calculate total
                 let total = 0;
+                let itemCount = 0;
 
                 // Add each item to the cart display
-                cart.forEach(item => {
+                cart.forEach((item, index) => {
                     total += item.price * item.quantity;
+                    itemCount += item.quantity;
 
                     const li = document.createElement('li');
                     li.className = 'cart-item';
                     li.innerHTML = `
-                        <span>${item.name} (${item.quantity})</span>
-                        <span>₹${item.price * item.quantity}</span>
+                        <div class="item-info">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">₹${item.price} × ${item.quantity} = ₹${item.price * item.quantity}</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus" data-index="${index}">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn plus" data-index="${index}">+</button>
+                            <button class="remove-btn" data-index="${index}">×</button>
+                        </div>
                     `;
                     cartItemsList.appendChild(li);
                 });
 
-                // Update total
+                // Add event listeners to quantity buttons
+                document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+                    btn.addEventListener('click', decreaseQuantity);
+                });
+                
+                document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+                    btn.addEventListener('click', increaseQuantity);
+                });
+                
+                document.querySelectorAll('.remove-btn').forEach(btn => {
+                    btn.addEventListener('click', removeItem);
+                });
+
+                // Update total and count
                 cartTotal.textContent = `Total: ₹${total}`;
+                cartCount.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
 
                 // Show/hide empty cart message
                 if (cart.length === 0) {
@@ -300,16 +564,70 @@
                 }
             }
 
-            // Checkout button functionality
-            checkoutButton.addEventListener('click', function() {
-                if (cart.length === 0) {
-                    alert('Your cart is empty!');
+            // Quantity Control Functions
+            function decreaseQuantity(e) {
+                const index = e.target.getAttribute('data-index');
+                if (cart[index].quantity > 1) {
+                    cart[index].quantity -= 1;
                 } else {
-                    alert(`Order placed! Total: ₹${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)}`);
-                    cart = [];
-                    updateCart();
+                    cart.splice(index, 1);
                 }
-            });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCart();
+            }
+
+            function increaseQuantity(e) {
+                const index = e.target.getAttribute('data-index');
+                cart[index].quantity += 1;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCart();
+            }
+
+            function removeItem(e) {
+                const index = e.target.getAttribute('data-index');
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCart();
+            }
+
+            // Checkout Function
+            function checkout() {
+                if (cart.length === 0) {
+                    alert('Your cart is empty! Please add some items before checkout.');
+                    return;
+                }
+                
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const orderDetails = cart.map(item => 
+                    `${item.name} (${item.quantity} × ₹${item.price})`
+                ).join('\n');
+                
+                alert(`Order Confirmed!\n\n${orderDetails}\n\nTotal: ₹${total}\n\nThank you for your order!`);
+                
+                // Clear cart
+                cart = [];
+                localStorage.removeItem('cart');
+                updateCart();
+            }
+
+            // Search Functionality
+            function searchSnacks() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredSnacks = snacks.filter(snack => 
+                    snack.name.toLowerCase().includes(searchTerm) || 
+                    snack.desc.toLowerCase().includes(searchTerm) ||
+                    snack.category.toLowerCase().includes(searchTerm)
+                );
+                renderMenu(filteredSnacks);
+            }
+
+            // Event Listeners
+            checkoutButton.addEventListener('click', checkout);
+            searchInput.addEventListener('input', searchSnacks);
+
+            // Initial Render
+            renderMenu();
+            updateCart();
         });
     </script>
 </body>
