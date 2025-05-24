@@ -1,50 +1,12 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #fff8f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-header {
-    background-color: #ff9800;
-    padding: 1rem;
-    color: white;
-    text-align: center;
+.card {
+    transition: transform 0.3s;
 }
-
-nav a {
-    margin: 0 1rem;
-    color: white;
-    text-decoration: none;
+.card:hover {
+    transform: scale(1.03);
 }
-
-main {
-    padding: 2rem;
-}
-
-.product-grid {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.product-card {
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 1rem;
-    width: 200px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-footer {
-    background-color: #ff9800;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    position: fixed;
+.add-to-cart {
     width: 100%;
-    bottom: 0;
 }
