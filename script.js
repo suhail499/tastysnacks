@@ -1,118 +1,90 @@
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+// Firebase कॉन्फिग (अपना कॉन्फिग यहाँ डालें)
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
 
-function addToCart(name, price) {
-  cart.push({ name, price });
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCart();
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// DOM Elements
+const productList = document.getElementById('productList');
+const searchBar = document.getElementById('searchBar');
+const cartCount = document.getElementById('cartCount');
+const authModal = new bootstrap.Modal(document.getElementById('authModal'));
+let currentUser = null;
+
+// प्रोडक्ट डेटा (असली ऐप में Firebase से लोड होगा)
+const products = [
+    { id: 1, name: "Masala Chips", price: 20, rating: 4.5, image: "https://via.placeholder.com/150" },
+    { id: 2, name: "Chocolate Cookies", price: 50, rating: 4.2, image: "https://via.placeholder.com/150" }
+];
+
+// प्रोडक्ट्स दिखाएं
+function renderProducts(products) {
+    productList.innerHTML = products.map(product => `
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="${product.image}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text">₹${product.price} | ⭐${product.rating}</p>
+                    <button class="btn btn-warning add-to-cart" data-id="${product.id}">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
 }
 
+// साइन अप/लॉगिन
+document.getElementById('signupBtn').addEventListener('click', () => {
+    document.getElementById('modalTitle').textContent = "Sign Up";
+    document.getElementById('emailField').style.display = 'block';
+    document.getElementById('submitAuth').textContent = "Sign Up";
+    authModal.show();
+});
+
+// Firebase Auth (Phone/Email)
+document.getElementById('authForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (document.getElementById('submitAuth').textContent === "Sign Up") {
+        // साइन अप लॉजिक
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                alert("Account created!");
+                authModal.hide();
+            })
+            .catch((error) => {
+                alert("Error: " + error.message);
+            });
+    } else {
+        // लॉगिन लॉजिक
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                alert("Logged in!");
+                authModal.hide();
+            })
+            .catch((error) => {
+                alert("Error: " + error.message);
+            });
+    }
+});
+
+// कार्ट फंक्शन
+let cart = [];
 function updateCart() {
-  const cartContainer = document.getElementById('cart-items');
-  const totalElement = document.getElementById('total');
-  cartContainer.innerHTML = '';
-  let total = 0;
-
-  if (cart.length === 0) {
-    cartContainer.innerHTML = '<li>Your cart is empty.</li>';
-    totalElement.textContent = '0';
-    return;
-  }
-
-  cart.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = `${item.name} - ₹${item.price}`;
-    cartContainer.appendChild(li);
-    total += item.price;
-  });
-
-  totalElement.textContent = total;
+    cartCount.textContent = cart.length;
 }
 
-document.addEventListener('DOMContentLoaded', updateCart);
-
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-  const signupForm = document.getElementById('signupForm');
-  const message = document.getElementById('message');
-
-  if (signupForm) {
-    signupForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-
-      if (password.length < 6) {
-        message.textContent = "Password must be at least 6 characters.";
-        message.style.color = "red";
-        return;
-      }
-
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-
-      const userExists = users.some(user => user.email === email);
-      if (userExists) {
-        message.textContent = "User already exists. Please login.";
-        message.style.color = "red";
-        return;
-      }
-
-      users.push({ name, email, password });
-      localStorage.setItem('users', JSON.stringify(users));
-      message.textContent = "Signup successful! Redirecting to login...";
-      message.style.color = "green";
-
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 1500);
-    });
-  }
-});
-
-// Signup Logic
-document.addEventListener("DOMContentLoaded", () => {
-  const signupForm = document.getElementById("signupForm");
-  const loginForm = document.getElementById("loginForm");
-
-  if (signupForm) {
-    signupForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const email = document.getElementById("signupEmail").value;
-      const password = document.getElementById("signupPassword").value;
-
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      const exists = users.find((user) => user.email === email);
-
-      if (exists) {
-        alert("User already exists!");
-      } else {
-        users.push({ email, password });
-        localStorage.setItem("users", JSON.stringify(users));
-        alert("Signup successful!");
-        window.location.href = "login.html";
-      }
-    });
-  }
-
-  // Login Logic
-  if (loginForm) {
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
-
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      const user = users.find((u) => u.email === email && u.password === password);
-
-      if (user) {
-        alert("Login successful!");
-        window.location.href = "index.html";
-      } else {
-        document.getElementById("loginError").textContent = "Invalid credentials!";
-      }
-    });
-  }
-});
+// इनिशियल लोड
+renderProducts(products);
