@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TastySnacks - Full E-commerce Site</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fefefe; }
+    header, footer { background: linear-gradient(to right, #007AFF, #FF2D55); color: white; padding: 1rem; text-align: center; }
+    nav { background: #eee; padding: 1rem; display: flex; justify-content: space-between; }
+    nav input, nav button { padding: 0.5rem; margin-left: 0.5rem; }
+    .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; padding: 1rem; }
+    .product { border: 1px solid #ccc; padding: 1rem; border-radius: 10px; }
+    .cart { padding: 1rem; background: #fafafa; }
+    .auth { padding: 1rem; background: #f4f4f4; }
+    .footer-section { display: flex; justify-content: space-around; padding: 1rem; background: #333; color: white; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+</head>
+<body>
+  <header>
+    <h1>TastySnacks</h1>
+    <p>Flipkart + Meesho Style E-Commerce Site</p>
+  </header>
+
+  <nav>
+    <div>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="text" id="name" placeholder="Name" />
+      <input type="text" id="phone" placeholder="Phone" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="signup()">Sign Up</button>
+      <button onclick="login()">Login</button>
+    </div>
+    <button onclick="showCart()">View Cart</button>
+  </nav>
+
+  <div class="products" id="product-list"></div>
+  <div class="cart" id="cart" style="display:none;"></div>
+
+  <section class="footer-section">
+    <div>
+      <h4>About Us</h4>
+      <p>We deliver tasty snacks at your doorstep!</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Email: support@tastysnacks.com</p>
+      <p>Phone: 1234567890</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 TastySnacks. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB1jBxatuWQd56C5trcdOEs9u7wW6100dM",
+      authDomain: "your-project.firebaseapp.com",
+      databaseURL: "https://your-project.firebaseio.com",
+      projectId: "your-project",
+      storageBucket: "your-project.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abc123"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    function signup() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(user => {
+          const uid = user.user.uid;
+          db.ref('users/' + uid).set({ name, email, phone });
+          alert('Signup successful');
+        })
+        .catch(e => alert(e.message));
+    }
+
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => alert('Login successful'))
+        .catch(e => alert(e.message));
+    }
+
+    const products = [
+      { id: 1, name: "Chips", price: 20 },
+      { id: 2, name: "Cookies", price: 30 },
+      { id: 3, name: "Samosa", price: 15 }
+    ];
+
+    const cart = [];
+
+    function renderProducts() {
+      const container = document.getElementById('product-list');
+      container.innerHTML = '';
+      products.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `<h3>${p.name}</h3><p>Price: ₹${p.price}</p><button onclick='addToCart(${JSON.stringify(p)})'>Add to Cart</button>`;
+        container.appendChild(div);
+      });
+    }
+
+    function addToCart(product) {
+      cart.push(product);
+      alert(product.name + " added to cart");
+    }
+
+    function showCart() {
+      const cartDiv = document.getElementById('cart');
+      cartDiv.style.display = 'block';
+      cartDiv.innerHTML = '<h2>Your Cart</h2>';
+      let total = 0;
+      cart.forEach(item => {
+        cartDiv.innerHTML += `<p>${item.name} - ₹${item.price}</p>`;
+        total += item.price;
+      });
+      cartDiv.innerHTML += `<p><strong>Total: ₹${total}</strong></p><button onclick="placeOrder()">Place Order</button>`;
+    }
+
+    function placeOrder() {
+      const user = auth.currentUser;
+      if (!user) return alert("Login first to place order");
+      db.ref('orders/' + user.uid).push(cart);
+      alert("Order placed successfully");
+      cart.length = 0;
+      document.getElementById('cart').style.display = 'none';
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
