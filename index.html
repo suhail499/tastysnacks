@@ -4,110 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TastySnacks - Online Store</title>
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root {
-      --primary: #2874f0;
-      --secondary: #fb641b;
-    }
+    :root { --primary: #2874f0; }
     .navbar { background-color: var(--primary) !important; }
     .btn-primary { background-color: var(--primary); }
-    .btn-danger { background-color: var(--secondary); }
-    .product-card {
-      transition: transform 0.3s;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    .product-img {
-      height: 200px;
-      object-fit: contain;
-      background: #f8f9fa;
-    }
+    .product-card { transition: all 0.3s; border-radius: 8px; }
+    .product-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .product-img { height: 180px; object-fit: contain; }
     .search-box { width: 500px; }
-    .dropdown:hover .dropdown-menu { display: block; }
   </style>
 </head>
 <body>
-  <!-- Navbar (Flipkart-style) -->
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#">TastySnacks</a>
+      <a class="navbar-brand fw-bold" href="index.html">TastySnacks</a>
       
       <!-- Search Bar -->
       <div class="d-flex search-box">
-        <input class="form-control" type="search" placeholder="Search snacks, cookies..." id="searchInput">
+        <input class="form-control" type="search" placeholder="Search snacks..." id="searchInput">
         <button class="btn btn-warning"><i class="fas fa-search"></i></button>
       </div>
       
       <!-- Right Menu -->
-      <div class="d-flex align-items-center">
-        <!-- Login/Signup Dropdown -->
-        <div class="dropdown ms-3">
-          <button class="btn btn-light dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown">
-            <i class="fas fa-user"></i> Login
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
-            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</a></li>
-          </ul>
-        </div>
-        
-        <!-- Orders Link -->
-        <a href="#" class="btn btn-light ms-3" id="ordersBtn">
-          <i class="fas fa-box"></i> My Orders
+      <div class="d-flex align-items-center gap-3">
+        <a href="orders.html" class="btn btn-light">
+          <i class="fas fa-box"></i> Orders
         </a>
-        
-        <!-- Cart Button -->
-        <button class="btn btn-light ms-3" id="cartBtn">
-          <i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)
-        </button>
+        <a href="login.html" class="btn btn-light" id="loginBtn">
+          <i class="fas fa-user"></i> Login
+        </a>
+        <a href="cart.html" class="btn btn-light position-relative">
+          <i class="fas fa-shopping-cart"></i> Cart
+          <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge bg-danger">0</span>
+        </a>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <div class="container-fluid mt-3">
-    <div class="row">
-      <!-- Sidebar Filters -->
-      <div class="col-md-2">
-        <div class="card p-3">
-          <h5>Filters</h5>
-          <div class="mb-3">
-            <label class="form-label">Price Range</label>
-            <input type="range" class="form-range" min="10" max="500" id="priceRange">
-            <div class="d-flex justify-content-between">
-              <span>₹10</span>
-              <span>₹500</span>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Category</label>
-            <select class="form-select" id="categoryFilter">
-              <option value="all">All</option>
-              <option value="chips">Chips</option>
-              <option value="cookies">Cookies</option>
-              <option value="chocolate">Chocolate</option>
-            </select>
-          </div>
-          <button class="btn btn-primary btn-sm" id="applyFilters">Apply</button>
-        </div>
-      </div>
-      
-      <!-- Product Grid -->
-      <div class="col-md-10">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h4>Popular Snacks & Cookies</h4>
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-              Sort By: <span id="sortText">Popularity</span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item sort-option" data-sort="
+  <!-- Product Grid -->
+  <div class="container my-4">
+    <div class="row g-4" id="productList">
+      <!-- Products load dynamically -->
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
