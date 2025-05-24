@@ -103,3 +103,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+// Show Welcome Message if User is Logged In
+document.addEventListener("DOMContentLoaded", function () {
+  const currentUser = localStorage.getItem("currentUser");
+  if (currentUser) {
+    const welcomeSection = document.getElementById("welcomeMessage");
+    const userNameSpan = document.getElementById("userName");
+    if (welcomeSection && userNameSpan) {
+      userNameSpan.textContent = currentUser;
+      welcomeSection.style.display = "block";
+    }
+  }
+});
+
+// Logout function
+function logout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "login.html";
+}
