@@ -234,3 +234,41 @@
 <!-- नया लिंक -->
 <link rel="stylesheet" href="styles.css">
 <script src="script.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TastySnacks</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .product { border: 1px solid #ddd; padding: 15px; margin: 10px; }
+  </style>
+</head>
+<body>
+  <h1>TastySnacks</h1>
+  <div id="productList">
+    <!-- प्रोडक्ट्स यहाँ लोड होंगे -->
+  </div>
+  <script>
+    // मिनिमल फंक्शनैलिटी
+    const products = [
+      {name: "Masala Chips", price: 20, rating: 4.5},
+      {name: "Chocolate Cookies", price: 50, rating: 4.2}
+    ];
+    
+    function loadProducts() {
+      const container = document.getElementById('productList');
+      products.forEach(product => {
+        container.innerHTML += `
+          <div class="product">
+            <h3>${product.name}</h3>
+            <p>₹${product.price} | ⭐${product.rating}</p>
+            <button onclick="alert('Added to cart!')">Add to Cart</button>
+          </div>
+        `;
+      });
+    }
+    loadProducts();
+  </script>
+</body>
+</html>
+
