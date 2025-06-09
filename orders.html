@@ -1,34 +1,125 @@
+आपके द्वारा दिया गया My Orders पेज का HTML कोड काफी अच्छा है। लेकिन production-level वेबसाइट के लिए कुछ छोटे सुधार ज़रूरी हैं ताकि यह accessibility, responsiveness, और code structure के लिहाज से बेहतर बने।
+
+यहाँ मैं एक बेहतर वर्जन दे रहा हूँ, जिसमें शामिल हैं:
+
+पूरी तरह mobile responsive table
+
+accessibility सुधार
+
+semantic HTML
+
+एक placeholder message अगर कोई order नहीं है
+
+Bootstrap क्लासेस का बेहतर उपयोग
+
+<nav> और <footer> के placeholders ताकि structure consistent रहे
+
+
+
+---
+
+✅ फाइनल सुधार किया गया HTML कोड:
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Orders | TastySnacks</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .order-status {
+      font-weight: 500;
+    }
+    .empty-message {
+      text-align: center;
+      color: #888;
+      padding: 2rem 0;
+    }
+  </style>
 </head>
 <body>
-  <!-- Same Navbar as index.html -->
-  
-  <div class="container my-5">
-    <h2 class="mb-4">My Orders</h2>
+
+  <!-- Navbar Placeholder -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">TastySnacks</a>
+      <!-- Add navbar links here if needed -->
+    </div>
+  </nav>
+
+  <main class="container my-5">
+    <h2 class="mb-4 text-center">My Orders</h2>
+
     <div class="table-responsive">
-      <table class="table">
-        <thead>
+      <table class="table table-bordered table-hover align-middle text-center">
+        <thead class="table-light">
           <tr>
-            <th>Order ID</th>
-            <th>Date</th>
-            <th>Items</th>
-            <th>Total</th>
-            <th>Status</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Date</th>
+            <th scope="col">Items</th>
+            <th scope="col">Total</th>
+            <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody id="ordersList">
-          <!-- Orders load here -->
+          <!-- Orders will be loaded here via JS -->
+          <tr id="noOrdersRow">
+            <td colspan="5" class="empty-message">You have no orders yet.</td>
+          </tr>
         </tbody>
       </table>
     </div>
-  </div>
+  </main>
+
+  <!-- Footer Placeholder -->
+  <footer class="bg-light text-center py-3 mt-5">
+    <p class="mb-0">&copy; 2025 TastySnacks. All rights reserved.</p>
+  </footer>
 
   <script type="module" src="js/orders.js"></script>
 </body>
 </html>
+
+
+---
+
+🛠 सुझाव:
+
+1. JavaScript (orders.js) में यह चेक करें:
+
+अगर कोई ऑर्डर लिस्ट नहीं है, तो #noOrdersRow दिखे।
+
+अगर ऑर्डर्स हैं, तो उस row को remove() कर दें।
+
+
+
+
+const ordersList = document.getElementById('ordersList');
+const noOrdersRow = document.getElementById('noOrdersRow');
+
+// Sample orders data (replace this with Firestore fetch)
+const orders = []; // e.g., fetch from Firebase
+
+if (orders.length === 0) {
+  noOrdersRow.style.display = 'table-row';
+} else {
+  noOrdersRow.remove();
+  orders.forEach(order => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${order.id}</td>
+      <td>${order.date}</td>
+      <td>${order.items.join(', ')}</td>
+      <td>₹${order.total}</td>
+      <td class="order-status">${order.status}</td>
+    `;
+    ordersList.appendChild(row);
+  });
+}
+
+
+---
+
+अगर तुम चाहो तो मैं orders.js का Firebase के साथ पूरा वर्जन भी बना सकता हूँ, जो Firestore से ऑर्डर लोड करता हो। बताओ अगर वो भी चाहिए।
+
