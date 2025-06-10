@@ -309,11 +309,106 @@
     <title>TastySnacks - Add Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* ... (keep your existing styles) ... */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .upload-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .form-title {
+            color: #ff6b6b;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+        }
+        .form-control, .form-select {
+            height: 45px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+        }
+        .btn-upload {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-upload:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+        #previewImage {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        #status {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+        }
+        .back-link:hover {
+            color: #ff6b6b;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
-    <!-- ... (keep your existing HTML structure) ... -->
+    <div class="container">
+        <div class="upload-container">
+            <h2 class="form-title">Add New Product</h2>
+            <form id="productForm">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="title" placeholder="Product Title" required>
+                </div>
+                <div class="mb-3">
+                    <input type="number" class="form-control" id="price" placeholder="Price (₹)" required>
+                </div>
+                <div class="mb-3">
+                    <select class="form-select" id="category" required>
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="snacks">Snacks</option>
+                        <option value="sweets">Sweets</option>
+                        <option value="drinks">Drinks</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <textarea class="form-control" id="description" rows="3" placeholder="Product Description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Product Image</label>
+                    <input class="form-control" type="file" id="image" accept="image/*" required>
+                    <img id="previewImage" alt="Preview">
+                </div>
+                <button type="submit" class="btn btn-upload">Upload Product</button>
+                <p id="status" class="text-muted"></p>
+            </form>
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+    </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -321,7 +416,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
 
     <script>
-        // Replace with your actual Firebase config
+        // यहाँ अपना Firebase कॉन्फ़िगरेशन डालें
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_AUTH_DOMAIN",
@@ -331,29 +426,15 @@
             appId: "YOUR_APP_ID"
         };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
+        // Firebase इनिशियलाइज़ करें
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // Image preview function
+        // इमेज प्रिव्यू फंक्शन
         document.getElementById('image').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                // Validate file type
-                if (!file.type.match('image.*')) {
-                    alert('Please select an image file (jpg, png, etc.)');
-                    document.getElementById('image').value = '';
-                    return;
-                }
-                
-                // Validate file size (max 2MB)
-                if (file.size > 2 * 1024 * 1024) {
-                    alert('Image size should be less than 2MB');
-                    document.getElementById('image').value = '';
-                    return;
-                }
-                
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const preview = document.getElementById('previewImage');
@@ -364,8 +445,8 @@
             }
         });
 
-        // Form submission with improved error handling
-        document.getElementById('productForm').addEventListener('submit', function(e) {
+        // फॉर्म सबमिशन
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const title = document.getElementById('title').value;
@@ -378,74 +459,42 @@
             statusElement.textContent = "Uploading product...";
             statusElement.style.color = "#0d6efd";
             
-            // Disable submit button during upload
-            const submitBtn = document.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Uploading...";
-            
-            // First upload the image to Firebase Storage
-            const storageRef = storage.ref(`products/${Date.now()}_${imageFile.name}`);
-            const uploadTask = storageRef.put(imageFile);
-            
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    // Progress tracking (optional)
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log('Upload is ' + progress + '% done');
-                },
-                (error) => {
-                    // Handle unsuccessful uploads
-                    console.error("Upload error:", error);
-                    statusElement.textContent = "Error uploading image: " + error.message;
-                    statusElement.style.color = "#dc3545";
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = "Upload Product";
-                },
-                () => {
-                    // Handle successful uploads on complete
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        console.log('File available at', downloadURL);
-                        
-                        // Now save product data to Firestore
-                        db.collection("products").add({
-                            title: title,
-                            price: price,
-                            category: category,
-                            description: description,
-                            imageUrl: downloadURL,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                        })
-                        .then(() => {
-                            statusElement.textContent = "Product uploaded successfully!";
-                            statusElement.style.color = "#198754";
-                            
-                            // Reset form
-                            document.getElementById('productForm').reset();
-                            document.getElementById('previewImage').style.display = 'none';
-                            
-                            // Re-enable button
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = "Upload Product";
-                            
-                            // Clear status after 3 seconds
-                            setTimeout(() => {
-                                statusElement.textContent = "";
-                            }, 3000);
-                        })
-                        .catch((error) => {
-                            console.error("Error saving product:", error);
-                            statusElement.textContent = "Error saving product data: " + error.message;
-                            statusElement.style.color = "#dc3545";
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = "Upload Product";
-                        });
-                    });
-                }
-            );
+            try {
+                // इमेज अपलोड करें
+                const storageRef = storage.ref(`products/${Date.now()}_${imageFile.name}`);
+                const uploadTask = await storageRef.put(imageFile);
+                const imageUrl = await uploadTask.ref.getDownloadURL();
+                
+                // फायरस्टोर में डेटा सेव करें
+                await db.collection("products").add({
+                    title: title,
+                    price: price,
+                    category: category,
+                    description: description,
+                    imageUrl: imageUrl,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                statusElement.textContent = "Product uploaded successfully!";
+                statusElement.style.color = "#198754";
+                
+                // फॉर्म रीसेट
+                document.getElementById('productForm').reset();
+                document.getElementById('previewImage').style.display = 'none';
+                
+                // 3 सेकंड बाद स्टेटस मैसेज हटाएं
+                setTimeout(() => {
+                    statusElement.textContent = "";
+                }, 3000);
+                
+            } catch (error) {
+                console.error("Error uploading product: ", error);
+                statusElement.textContent = "Error uploading product. Please try again.";
+                statusElement.style.color = "#dc3545";
+            }
         });
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
