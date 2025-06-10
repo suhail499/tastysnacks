@@ -299,90 +299,209 @@
   <script type="module" src="js/app.js"></script>
 </body>
 </html>
-बहुत बढ़िया सवाल सुहैल!
-
-हाँ, जो HTML और JavaScript कोड मैंने ऊपर दिया है, वह आपको अपनी मौजूदा वेबसाइट (https://suhail499.github.io/tastysnacks/) में शामिल करना होगा, लेकिन सही जगह पर और कुछ बातों का ध्यान रखते हुए।
-
-
----
-
-✅ आपके पास दो ऑप्शन हैं:
-
-🅰️ Option A: सीधा HTML में जोड़ना (Simple तरीका)
-
-1. अपने index.html या admin.html जैसा नया पेज बनाइए (उदाहरण: upload.html)
-
-
-2. मेरे द्वारा दिया गया Form + Script उस नए HTML फाइल में पेस्ट कर दीजिए
-
-
-3. इस पेज को GitHub पर अपलोड कर दीजिए
 
 
 
-🔗 जैसे: https://suhail499.github.io/tastysnacks/upload.html
-
-
----
-
-🅱️ Option B: मौजूदा वेबसाइट में फॉर्म जोड़ना
-
-अगर आप उसी index.html में जोड़ना चाहते हैं तो:
-
-1. जिस जगह आप “Add Product” फॉर्म दिखाना चाहते हैं वहाँ यह HTML फॉर्म पेस्ट करें:
 
 
 
-<!-- Add Product Form -->
-<section>
-  <h2>Add New Product</h2>
-  <form id="productForm">
-    <input type="text" id="title" placeholder="Product Title" required />
-    <input type="number" id="price" placeholder="Price" required />
-    <input type="file" id="image" required />
-    <button type="submit">Upload Product</button>
-  </form>
-  <p id="status"></p>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TastySnacks - Add Products</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .upload-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .form-title {
+            color: #ff6b6b;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+        }
+        .form-control, .form-select {
+            height: 45px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+        }
+        .btn-upload {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-upload:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+        #previewImage {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        #status {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+        }
+        .back-link:hover {
+            color: #ff6b6b;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="upload-container">
+            <h2 class="form-title">Add New Product</h2>
+            <form id="productForm">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="title" placeholder="Product Title" required>
+                </div>
+                <div class="mb-3">
+                    <input type="number" class="form-control" id="price" placeholder="Price (₹)" required>
+                </div>
+                <div class="mb-3">
+                    <select class="form-select" id="category" required>
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="snacks">Snacks</option>
+                        <option value="sweets">Sweets</option>
+                        <option value="drinks">Drinks</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <textarea class="form-control" id="description" rows="3" placeholder="Product Description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Product Image</label>
+                    <input class="form-control" type="file" id="image" accept="image/*" required>
+                    <img id="previewImage" alt="Preview">
+                </div>
+                <button type="submit" class="btn btn-upload">Upload Product</button>
+                <p id="status" class="text-muted"></p>
+            </form>
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+    </div>
 
-2. और वेबसाइट के नीचे या <script> टैग में मेरा Firebase JavaScript कोड डालें।
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
 
+    <script>
+        // यहाँ अपना Firebase कॉन्फ़िगरेशन डालें
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
+        // Firebase इनिशियलाइज़ करें
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
 
-⚠ ध्यान रखें:
-आपके पेज में पहले से Firebase SDK न हो तो उसे जोड़ना जरूरी है। और firebaseConfig में आपका असली Firebase config आएगा।
+        // इमेज प्रिव्यू फंक्शन
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('previewImage');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
 
-
----
-
-🔧 Bonus: Firestore और Storage में क्या आएगा?
-
-Firestore में ऐसा डेटा सेव होगा:
-
-{
-  "title": "Fancy Kurti",
-  "price": 499,
-  "imageUrl": "https://firebasestorage.googleapis.com/....",
-  "createdAt": "..."
-}
-
-
----
-
-👉 अगले कदम?
-
-अगर आप चाहो तो मैं:
-
-upload.html पेज बना दूं
-
-Firebase config सेटअप कर दूं
-
-Products को लिस्ट करने वाला पेज भी बना दूं
-
-
-क्या आप चाहते हैं कि मैं GitHub पर चलने वाला upload.html पूरा बना दूं और दूँ?
-बस आप मुझे अपना Firebase Config दे दो (या कहो तो मैं Dummy बना देता हूँ)।
-
+        // फॉर्म सबमिशन
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value;
+            const imageFile = document.getElementById('image').files[0];
+            
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = "Uploading product...";
+            statusElement.style.color = "#0d6efd";
+            
+            try {
+                // इमेज अपलोड करें
+                const storageRef = storage.ref(`products/${Date.now()}_${imageFile.name}`);
+                const uploadTask = await storageRef.put(imageFile);
+                const imageUrl = await uploadTask.ref.getDownloadURL();
+                
+                // फायरस्टोर में डेटा सेव करें
+                await db.collection("products").add({
+                    title: title,
+                    price: price,
+                    category: category,
+                    description: description,
+                    imageUrl: imageUrl,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                statusElement.textContent = "Product uploaded successfully!";
+                statusElement.style.color = "#198754";
+                
+                // फॉर्म रीसेट
+                document.getElementById('productForm').reset();
+                document.getElementById('previewImage').style.display = 'none';
+                
+                // 3 सेकंड बाद स्टेटस मैसेज हटाएं
+                setTimeout(() => {
+                    statusElement.textContent = "";
+                }, 3000);
+                
+            } catch (error) {
+                console.error("Error uploading product: ", error);
+                statusElement.textContent = "Error uploading product. Please try again.";
+                statusElement.style.color = "#dc3545";
+            }
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
 
 
 
