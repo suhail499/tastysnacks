@@ -305,136 +305,6 @@
 
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TastySnacks - Add Products</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .upload-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        .form-title {
-            color: #ff6b6b;
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: 700;
-        }
-        .form-control, .form-select {
-            height: 45px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #ff6b6b;
-            box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
-        }
-        .btn-upload {
-            background-color: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            width: 100%;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .btn-upload:hover {
-            background-color: #ff5252;
-            transform: translateY(-2px);
-        }
-        #previewImage {
-            max-width: 100%;
-            max-height: 200px;
-            margin-top: 15px;
-            border-radius: 5px;
-            display: none;
-        }
-        #status {
-            margin-top: 15px;
-            text-align: center;
-            font-weight: 500;
-        }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #6c757d;
-        }
-        .back-link:hover {
-            color: #ff6b6b;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="upload-container">
-            <h2 class="form-title">Add New Product</h2>
-            <form id="productForm">
-                <div class="mb-3">
-                    <input type="text" class="form-control" id="title" placeholder="Product Title" required>
-                </div>
-                <div class="mb-3">
-                    <input type="number" class="form-control" id="price" placeholder="Price (₹)" required>
-                </div>
-                <div class="mb-3">
-                    <select class="form-select" id="category" required>
-                        <option value="" disabled selected>Select Category</option>
-                        <option value="snacks">Snacks</option>
-                        <option value="sweets">Sweets</option>
-                        <option value="drinks">Drinks</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <textarea class="form-control" id="description" rows="3" placeholder="Product Description"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label">Product Image</label>
-                    <input class="form-control" type="file" id="image" accept="image/*" required>
-                    <img id="previewImage" alt="Preview">
-                </div>
-                <button type="submit" class="btn btn-upload">Upload Product</button>
-                <p id="status" class="text-muted"></p>
-            </form>
-            <a href="index.html" class="back-link">← Back to Home</a>
-        </div>
-    </div>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
-
-    <script>
-        // यहाँ अपना Firebase कॉन्फ़िगरेशन डालें
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        // Firebase इनिशियलाइज़ करें
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-
         // इमेज प्रिव्यू फंक्शन
         document.getElementById('image').addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -504,6 +374,325 @@
 </html>
 
 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TastySnacks - Add Products</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        .upload-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .form-title {
+            color: #ff6b6b;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+        }
+        .form-control, .form-select {
+            height: 45px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+        }
+        .btn-upload {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        .btn-upload:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+        #previewImage {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 15px;
+            border-radius: 5px;
+            display: none;
+            border: 1px solid #eee;
+            padding: 5px;
+        }
+        #status {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 500;
+            min-height: 24px;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: #ff6b6b;
+        }
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .progress-bar {
+            height: 5px;
+            background-color: #ff6b6b;
+            width: 0%;
+            transition: width 0.3s;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="upload-container">
+            <h2 class="form-title">Add New Product</h2>
+            <form id="productForm">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Product Title</label>
+                    <input type="text" class="form-control" id="title" placeholder="Enter product name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" class="form-control" id="price" placeholder="Enter price in ₹" min="1" step="0.01" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select class="form-select" id="category" required>
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="snacks">Snacks</option>
+                        <option value="sweets">Sweets</option>
+                        <option value="drinks">Drinks</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" rows="3" placeholder="Enter product details"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Product Image (Max 2MB)</label>
+                    <input class="form-control" type="file" id="image" accept="image/*" required>
+                    <div class="progress-bar" id="uploadProgress"></div>
+                    <div class="mt-2">
+                        <img id="previewImage" alt="Product Preview" class="img-thumbnail">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-upload" id="submitBtn">
+                    <span id="btnText">Upload Product</span>
+                    <div class="loading-spinner" id="spinner"></div>
+                </button>
+                <p id="status"></p>
+            </form>
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase कॉन्फ़िगरेशन (अपना कॉन्फ़िग यहाँ डालें)
+        const firebaseConfig = {
+            apiKey: "AIzaSyABC123XYZ456DEF789GHI",
+            authDomain: "your-project-id.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abc123def456ghi789xyz"
+        };
+
+        // Firebase इनिशियलाइज़ करें
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // इमेज प्रिव्यू फंक्शन
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // फाइल साइज चेक (मैक्स 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    showStatus('Image size should be less than 2MB', 'error');
+                    this.value = '';
+                    return;
+                }
+                
+                // फाइल टाइप चेक (केवल इमेज)
+                if (!file.type.match('image.*')) {
+                    showStatus('Please select an image file (JPEG, PNG)', 'error');
+                    this.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('previewImage');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // फॉर्म सबमिशन
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // बटन डिसेबल करें और लोडिंग दिखाएं
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('spinner');
+            
+            submitBtn.disabled = true;
+            btnText.textContent = "Uploading...";
+            spinner.style.display = 'block';
+            
+            const title = document.getElementById('title').value.trim();
+            const price = parseFloat(document.getElementById('price').value);
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value.trim();
+            const imageFile = document.getElementById('image').files[0];
+            
+            // वैलिडेशन
+            if (!title || !price || !category || !imageFile) {
+                showStatus('Please fill all required fields', 'error');
+                resetButton();
+                return;
+            }
+            
+            showStatus('Uploading product...', 'info');
+            
+            // स्टोरेज रेफरेंस बनाएं
+            const storageRef = storage.ref('products/' + Date.now() + '_' + imageFile.name);
+            const uploadTask = storageRef.put(imageFile);
+            
+            // अपलोड प्रोग्रेस ट्रैक करें
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    // प्रोग्रेस अपडेट
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    document.getElementById('uploadProgress').style.width = progress + '%';
+                    showStatus('Uploading: ' + Math.round(progress) + '%', 'info');
+                },
+                (error) => {
+                    // एरर हैंडलिंग
+                    console.error('Upload error:', error);
+                    showStatus('Upload failed: ' + error.message, 'error');
+                    resetButton();
+                },
+                () => {
+                    // अपलोड कंप्लीट
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        // फायरस्टोर में डेटा सेव करें
+                        db.collection("products").add({
+                            title: title,
+                            price: price,
+                            category: category,
+                            description: description,
+                            imageUrl: downloadURL,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        })
+                        .then(() => {
+                            showStatus('✅ Product uploaded successfully!', 'success');
+                            resetForm();
+                        })
+                        .catch((error) => {
+                            console.error('Firestore error:', error);
+                            showStatus('Error saving product details: ' + error.message, 'error');
+                        });
+                    });
+                }
+            );
+        });
+        
+        // स्टेटस मैसेज दिखाने का फंक्शन
+        function showStatus(message, type) {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = message;
+            
+            switch(type) {
+                case 'error':
+                    statusElement.style.color = '#dc3545';
+                    break;
+                case 'success':
+                    statusElement.style.color = '#198754';
+                    break;
+                default:
+                    statusElement.style.color = '#0d6efd';
+            }
+        }
+        
+        // फॉर्म रीसेट करें
+        function resetForm() {
+            document.getElementById('productForm').reset();
+            document.getElementById('previewImage').style.display = 'none';
+            document.getElementById('uploadProgress').style.width = '0%';
+            resetButton();
+            
+            // 5 सेकंड बाद स्टेटस मैसेज हटाएं
+            setTimeout(() => {
+                document.getElementById('status').textContent = '';
+            }, 5000);
+        }
+        
+        // बटन को नॉर्मल स्टेट में रीसेट करें
+        function resetButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('spinner');
+            
+            submitBtn.disabled = false;
+            btnText.textContent = "Upload Product";
+            spinner.style.display = 'none';
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
 
 
 
